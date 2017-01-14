@@ -30,6 +30,8 @@ class Melora::DicePool
 
     @results << table
 
+    $stderr.puts '/!\ You failed horribly' if (table.count(1) > (table.size / 2.0).ceil) && @horrible_failure
+
     case @sort
     when :asc
       table.sort
