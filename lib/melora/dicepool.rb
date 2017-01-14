@@ -1,8 +1,9 @@
 # A bucket of dice for you to throw at the table
 # @attr_reader [Array<Integer>] A record of dice we've thrown on the table
 class Melora::DicePool
-  attr_reader :faces, :number_of_dice, :exploding
+  attr_accessor :faces, :number_of_dice, :modifier, :exploding, :horrible_failure, :sort
   attr_reader :results
+  attr_reader :table
 
   # @param [Hash] params The configuration to roll a pool of dice
   # @option params [Integer] :faces The number of sides your dice have
@@ -10,14 +11,15 @@ class Melora::DicePool
   # @option params [Integer] :exploding Re-roll-and-add if the random number is the max number on the die
   # @option params [TrueClass|FalseClass] :horrible_failure lets you know if more than half of your pool was a failure
   # @option params [:asc,:desc,nil] :sort dice sort order, nil means don't sort
-  # @option modifier [Integer] :modifier a bonus (or penalty, if negative) to apply to each die in the roll
+  # @option params [Integer] :modifier a bonus (or penalty, if negative) to apply to each die in the roll
   def initialize(params = {})
     @faces = params.fetch :faces, 6
     @number_of_dice = params.fetch :number_of_dice, 1
+    @modifier = params.fetch :modifier, 0
+
     @exploding = params.fetch :exploding, true
     @horrible_failure = params.fetch :horrible_failure, false
     @sort = params.fetch :sort, :desc
-    @modifier = params.fetch :modifier, 0
     @results = []
 
     validate
@@ -26,20 +28,13 @@ class Melora::DicePool
   # Throw a bucket of dice onto the table
   # @return [Array<Fixnum>]
   def roll_pool
-    table = (1..@number_of_dice).to_a.map { roll_die + @modifier }
+    @table = (1..@number_of_dice).to_a.map { roll_die + @modifier }
 
-    @results << table
+    @results << sort_table
 
-    $stderr.puts '/!\ You failed horribly' if (table.count(1) > (table.size / 2.0).ceil) && @horrible_failure
+    $stderr.puts '/!\ You failed horribly' if @horrible_failure && rolled_horribly?
 
-    case @sort
-    when :asc
-      table.sort
-    when :desc
-      table.sort.reverse
-    else
-      table
-    end
+    @results.last
   end
   alias roll roll_pool
 
@@ -48,6 +43,23 @@ class Melora::DicePool
   private
 
   # ======================================================================
+
+  # Sorts the table array
+  def sort_table
+    case @sort
+    when :asc
+      @table.sort
+    when :desc
+      @table.sort.reverse
+    else
+      @table
+    end
+  end
+
+  # Did we roll horribly? (more than half the pool was a '1')
+  def rolled_horribly?
+    @table.count(1) >= (@table.size / 2.0).ceil
+  end
 
   # Helper to validate that an obj called obj_name is the expected_type
   # @param [String] obj_name The variable name of the object
