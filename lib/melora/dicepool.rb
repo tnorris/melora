@@ -66,7 +66,7 @@ class Melora::DicePool
   # Makes sure the initializer was called correctly
   def validate
     { faces: @faces,
-      number_of_dice: @number_of_dice
+      number_of_dice: @number_of_dice,
       modifier: @modifier }.each do |k, v|
       validate_type k, v, Fixnum # rubocop:disable UnifiedInteger
     end
