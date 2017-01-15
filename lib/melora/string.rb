@@ -5,7 +5,7 @@ class Melora::String
     # Turns a string like "3d6+10", "d6", or "d6-1" into a hash that can be passed into DicePool.new
     # As the joke goes: Now I have \d+ problems!
     def parse_d_notation_string(s)
-      d_notation_regex = /(?<number_of_dice>\d+){0,1}(d(?<faces>\d+)){0,1}(?<modifier>[+-]\d+){0,1}/
+      validate_d_notation(s)
       number_of_dice, faces, modifier = s.match(d_notation_regex).captures.map(&:to_i)
       number_of_dice = 1 if number_of_dice.zero?
 
@@ -15,6 +15,14 @@ class Melora::String
       { number_of_dice: number_of_dice,
         faces: faces,
         modifier: modifier }
+    end
+
+    def validate_d_notation(s)
+      raise TypeError unless s =~ d_notation_regex
+    end
+
+    def d_notation_regex
+      /(?<number_of_dice>\d+){0,1}(d(?<faces>\d+)){0,1}(?<modifier>[+-]\d+){0,1}/
     end
 
     def old_timey_cowboyize(s)
