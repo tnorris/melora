@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Helpers for Strings
 class Melora::String
   class << self
