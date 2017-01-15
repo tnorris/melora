@@ -14,6 +14,8 @@ class Melora::Traits
       raise e
     end
 
+    raise TypeError, "Unable to parse #{yaml_path}. Is it valid yaml?" unless @stats_hash.class == Hash
+
     @traits = {}
     denormalize_stats_hash
   end
