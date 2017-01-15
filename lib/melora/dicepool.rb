@@ -113,7 +113,7 @@ class Melora::DicePool
     raise TypeError, 'Exploding 1 sided die cause infinite loops' if @faces == 1 && @exploding
     raise TypeError, 'Must roll at least 1 die' if @number_of_dice < 1
     raise TypeError, 'Must roll fewer than 100 dice' if @number_of_dice > 100
-    raise TypeError, 'Too many faces per die' if @faces > 10000
+    raise TypeError, 'Too many faces per die' if @faces > 10_000
   end
 
   # Rolls a single die, exploding if appropriate
