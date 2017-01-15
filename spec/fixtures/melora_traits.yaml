@@ -1,0 +1,90 @@
+---
+cognition:
+  base:
+    faces: 12
+    dice: 4
+  artillery:
+  arts:
+  scruitinize: 3
+  search: 2
+  trackin:
+knowledge:
+  base:
+    faces: 8
+    dice: 3
+  academia: 3
+  area_knowledge:
+  area_knowledge_home_county: 2
+  demolition:
+  disguise:
+  language:
+  language_native_tongue:
+  medicine:
+  professional:
+  science:
+  trade:
+mein:
+  base:
+    faces: 12
+    dice: 4
+  animal_handlin: 2
+  leadership:
+  overawe:
+  performin:
+  persuasion:
+  tale_tellin:
+smarts:
+  base:
+    faces: 12
+    dice: 4
+  bluff:
+  gamblin:
+  ridicule:
+  scroungin:
+  survival:
+  streetwise:
+  tinkerin:
+spirit:
+  base:
+    faces: 12
+    dice: 4
+  faith: 2
+  guts: 3
+deftness:
+  base:
+    faces: 8
+    dice: 2
+  bow:
+  fannin:
+  filchin:
+  lockpickin:
+  shootin_automatic_pistol: 2
+  shootin:
+  sleight_o_hand:
+  speed_load:
+  throwin:
+nimbleness:
+  base:
+    faces: 10
+    dice: 1
+    climbin: 1
+    dodge:
+    drivin:
+    fightin_stabbin: 2
+    horse_ridin:
+    sneak: 1
+    swimmin: 2
+    teamster:
+strength:
+  base:
+    faces: 6
+    dice: 4
+quickness:
+  base:
+    faces: 6
+    dice: 2
+  quick_draw:
+vigor:
+  base:
+    faces: 8
+    dice: 4

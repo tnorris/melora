@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+#
 # A bucket of dice for you to throw at the table
 # @attr_reader [Array<Integer>] A record of dice we've thrown on the table
 class Melora::DicePool
@@ -12,14 +14,16 @@ class Melora::DicePool
   # @option params [TrueClass|FalseClass] :horrible_failure lets you know if more than half of your pool was a failure
   # @option params [:asc,:desc,nil] :sort dice sort order, nil means don't sort
   # @option params [Integer] :modifier a bonus (or penalty, if negative) to apply to each die in the roll
+  # @option params [TrueClass|FalseClass] :clamp_positive Ensure all rolls are > 0
   def initialize(params = {})
     @faces = params.fetch :faces, 6
     @number_of_dice = params.fetch :number_of_dice, 1
     @modifier = params.fetch :modifier, 0
-
     @exploding = params.fetch :exploding, true
     @horrible_failure = params.fetch :horrible_failure, false
     @sort = params.fetch :sort, :desc
+    @clamp_positive = params.fetch :clamp_positive, true
+
     @results = []
 
     validate
@@ -28,7 +32,9 @@ class Melora::DicePool
   # Throw a bucket of dice onto the table
   # @return [Array<Fixnum>]
   def roll_pool
-    @table = (1..@number_of_dice).to_a.map { roll_die + @modifier }
+    @table = (1..@number_of_dice).to_a.map do
+      clamp_helper(roll_die + @modifier)
+    end
 
     @results << sort_table
 
@@ -43,6 +49,11 @@ class Melora::DicePool
   private
 
   # ======================================================================
+
+  # Clamps a number if we should
+  def clamp_helper(number)
+    @clamp_positive && number < 1 ? 1 : number
+  end
 
   # Sorts the table array
   def sort_table

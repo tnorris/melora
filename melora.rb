@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # A character in deadlands
 # Can roll dice pools, load a character sheet (with traits) from a YAML
 #
@@ -19,8 +20,19 @@ class Melora
       faces: faces,
       modifier: modifier }
   end
+
+  def self.old_timey_cowboyize(s)
+    s.split(' ').map { |i| i.gsub(/ing$/, 'in') }.join ' '
+  end
 end
 
-# How to use:
-# => m = Melora.new
-# => m.roll_pool(exploding: true, faces: 6, number_of_dice: 3)
+# Monkeypatch String because metaprogramming is cool
+class String
+  def to_dicepool
+    Melora.parse_d_notation_string self
+  end
+
+  def to_old_timey_cowboy
+    Melora.old_timey_cowboyize self
+  end
+end
