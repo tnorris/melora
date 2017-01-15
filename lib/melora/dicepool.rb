@@ -89,7 +89,12 @@ class Melora::DicePool
   end
 
   # Makes sure the initializer was called correctly
-  def validate # rubocop:disable MethodLength
+  def validate
+    validate_die_params
+    prevent_some_nonsense
+  end
+
+  def validate_die_params
     { faces: @faces,
       number_of_dice: @number_of_dice,
       modifier: @modifier }.each do |k, v|
@@ -102,8 +107,13 @@ class Melora::DicePool
     end
 
     validate_type :sort, @sort, [Symbol, NilClass]
+  end
 
+  def prevent_some_nonsense
     raise TypeError, 'Exploding 1 sided die cause infinite loops' if @faces == 1 && @exploding
+    raise TypeError, 'Must roll at least 1 die' if @number_of_dice < 1
+    raise TypeError, 'Must roll fewer than 100 dice' if @number_of_dice > 100
+    raise TypeError, 'Too many faces per die' if @faces > 10000
   end
 
   # Rolls a single die, exploding if appropriate
