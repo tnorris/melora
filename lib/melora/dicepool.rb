@@ -10,7 +10,7 @@ class Melora::DicePool
   # @param [Hash] params The configuration to roll a pool of dice
   # @option params [Integer] :faces The number of sides your dice have
   # @option params [Integer] :number_of_dice Number of dice to roll
-  # @option params [Integer] :exploding Re-roll-and-add if the random number is the max number on the die
+  # @option params [TrueClass|FalseClass] :exploding Re-roll-and-add if the random number is the max number on the die
   # @option params [TrueClass|FalseClass] :horrible_failure lets you know if more than half of your pool was a failure
   # @option params [:asc,:desc,nil] :sort dice sort order, nil means don't sort
   # @option params [Integer] :modifier a bonus (or penalty, if negative) to apply to each die in the roll
@@ -102,6 +102,8 @@ class Melora::DicePool
     end
 
     validate_type :sort, @sort, [Symbol, NilClass]
+
+    raise TypeError, 'Exploding 1 sided die cause infinite loops' if @faces == 1 && @exploding
   end
 
   # Rolls a single die, exploding if appropriate

@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 RSpec.describe Melora::DicePool do
+  context 'when told to explod dice with 1 face' do
+    subject { Melora::DicePool.new(faces: 1, exploding: true)}
+
+    it 'should raise an error' do
+      expect { subject }.to raise_error(TypeError)
+    end
+  end
   context 'when passed invalid params' do
     subject { Melora::DicePool.new(sort: 'bob') }
 
