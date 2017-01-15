@@ -34,7 +34,7 @@ class Melora::Traits
     method_name.to_s == '[]' || super
   end
 
-  def denormalize_stats_hash
+  def denormalize_stats_hash # rubocop:disable MethodLength
     @stats_hash.each do |category, category_hash|
       # skip the name, occupation, etc
       next if 'meta' == category

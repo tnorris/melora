@@ -89,7 +89,7 @@ class Melora::DicePool
   end
 
   # Makes sure the initializer was called correctly
-  def validate
+  def validate # rubocop:disable MethodLength
     { faces: @faces,
       number_of_dice: @number_of_dice,
       modifier: @modifier }.each do |k, v|
