@@ -107,6 +107,8 @@ class Melora::DicePool
   # Rolls a single die, exploding if appropriate
   def roll_die
     # rand is from 0..faces exclusive.
+    # @todo 'Marshal needs her "special roll of totally not cheating"'
+    # @todo make this seedable/deterministic
     roll = rand(@faces) + 1
 
     if @exploding && roll == @faces
