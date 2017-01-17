@@ -101,4 +101,4 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
-require './melora'
+require 'melora'
