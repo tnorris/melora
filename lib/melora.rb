@@ -4,17 +4,19 @@
 #
 # @author Tom Norris <tom.norris.iv@gmail.com>
 class Melora
+  VERSION = '0.2.0'
+
   # buckets of dice to throw at the table, and the logic to roll them
-  autoload :DicePool, './lib/melora/dicepool'
+  autoload :DicePool, 'dicepool'
 
   # the autoloader for Randomizer
-  autoload :Randomizers, './lib/melora/randomizers'
+  autoload :Randomizers, 'randomizers'
 
   # helpers for dice notation => dicepool config, old timey cowboy talk
-  autoload :String, './lib/melora/string'
+  autoload :String, 'string'
 
   # stats, part of your character sheet
-  autoload :Traits, './lib/melora/traits'
+  autoload :Traits, 'traits'
 end
 
 # Monkeypatch String because metaprogramming is cool

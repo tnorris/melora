@@ -4,5 +4,5 @@ class Melora::Randomizers
   # @todo 'Marshal needs her "special roll of totally not cheating"'
 
   # @todo make fair seedable
-  autoload :Fair, './lib/melora/randomizers/fair'
+  autoload :Fair, 'randomizers/fair'
 end
