@@ -7,11 +7,14 @@ class Melora
   # buckets of dice to throw at the table, and the logic to roll them
   autoload :DicePool, './lib/melora/dicepool'
 
-  # stats, part of your character sheet
-  autoload :Traits, './lib/melora/traits'
+  # the autoloader for Randomizer
+  autoload :Randomizers, './lib/melora/randomizers'
 
   # helpers for dice notation => dicepool config, old timey cowboy talk
   autoload :String, './lib/melora/string'
+
+  # stats, part of your character sheet
+  autoload :Traits, './lib/melora/traits'
 end
 
 # Monkeypatch String because metaprogramming is cool
