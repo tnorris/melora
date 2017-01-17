@@ -3,8 +3,8 @@
 # A bucket of dice for you to throw at the table
 # @attr_reader [Array<Integer>] A record of dice we've thrown on the table
 class Melora::DicePool
-  attr_accessor :faces, :number_of_dice, :modifier, :exploding, :horrible_failure, :sort
-  attr_reader :results
+  attr_reader :number_of_dice, :modifier, :exploding, :horrible_failure, :sort
+  attr_reader :results, :faces
   attr_reader :table
 
   # @param [Hash] params The configuration to roll a pool of dice
@@ -15,6 +15,7 @@ class Melora::DicePool
   # @option params [:asc,:desc,nil] :sort dice sort order, nil means don't sort
   # @option params [Integer] :modifier a bonus (or penalty, if negative) to apply to each die in the roll
   # @option params [TrueClass|FalseClass] :clamp_positive Ensure all rolls are > 0
+  # @option params [Melora::Randomizers::*] :randomizer the class that determines the next random number
   def initialize(params = {})
     @faces = params.fetch :faces, 6
     @number_of_dice = params.fetch :number_of_dice, 1
@@ -23,7 +24,7 @@ class Melora::DicePool
     @horrible_failure = params.fetch :horrible_failure, false
     @sort = params.fetch :sort, :desc
     @clamp_positive = params.fetch :clamp_positive, true
-
+    @randomizer = params.fetch(:randomizer, Melora::Randomizers::Fair.new(faces: @faces))
     @results = []
 
     validate
@@ -112,16 +113,14 @@ class Melora::DicePool
   def prevent_some_nonsense
     raise TypeError, 'Exploding 1 sided die cause infinite loops' if @faces == 1 && @exploding
     raise TypeError, 'Must roll at least 1 die' if @number_of_dice < 1
-    raise TypeError, 'Must roll fewer than 100 dice' if @number_of_dice > 100
+    raise TypeError, 'Must roll 100 dice or less' if @number_of_dice > 100
     raise TypeError, 'Too many faces per die' if @faces > 10_000
   end
 
   # Rolls a single die, exploding if appropriate
   def roll_die
     # rand is from 0..faces exclusive.
-    # @todo 'Marshal needs her "special roll of totally not cheating"'
-    # @todo make this seedable/deterministic
-    roll = rand(@faces) + 1
+    roll = @randomizer.rand + 1
 
     if @exploding && roll == @faces
       $stderr.puts 'Pop!'

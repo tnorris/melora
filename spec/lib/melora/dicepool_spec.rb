@@ -8,7 +8,31 @@ RSpec.describe Melora::DicePool do
     end
   end
 
-  context 'when passed invalid params' do
+  context 'when told to roll fewer than 1 dice' do
+    subject { Melora::DicePool.new(number_of_dice: 0) }
+
+    it 'should raise a TypeError' do
+      expect { subject }.to raise_error(TypeError)
+    end
+  end
+
+  context 'when told to roll more than 100 dice' do
+    subject { Melora::DicePool.new(number_of_dice: 101) }
+
+    it 'should raise a TypeError' do
+      expect { subject }.to raise_error(TypeError)
+    end
+  end
+
+  context 'when told to roll dice with more than 10000 faces' do
+    subject { Melora::DicePool.new(faces: 10_001) }
+
+    it 'should raise a TypeError' do
+      expect { subject }.to raise_error(TypeError)
+    end
+  end
+
+  context 'when passed nonsense sort params' do
     subject { Melora::DicePool.new(sort: 'bob') }
 
     it 'should raise an error' do

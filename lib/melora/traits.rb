@@ -2,8 +2,8 @@
 require 'yaml'
 
 # @todo extend enumeratable
-# A map of [String] skill => [String] Dice needed to roll it
 class Melora::Traits
+  # @attribute [Hash<String>] => [String] Hashmap of trait_name -> dice_pool_notation
   attr_reader :traits
 
   def initialize(yaml_path)
