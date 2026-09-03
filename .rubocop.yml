@@ -1,4 +1,22 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  TargetRubyVersion: '3.2'
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - 'Gemfile.lock'
+    - 'vendor/**/*'
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'melora.gemspec'
+
 Style/ClassAndModuleChildren:
-    EnforcedStyle: compact
-Metrics/LineLength:
-    Max: 120
+  EnforcedStyle: compact

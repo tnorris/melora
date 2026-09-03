@@ -1,11 +1,9 @@
 # frozen_string_literal: true
-#
+
 # A bucket of dice for you to throw at the table
 # @attr_reader [Array<Integer>] A record of dice we've thrown on the table
 class Melora::DicePool
-  attr_reader :number_of_dice, :modifier, :exploding, :horrible_failure, :sort
-  attr_reader :results, :faces
-  attr_reader :table
+  attr_reader :number_of_dice, :modifier, :exploding, :horrible_failure, :sort, :results, :faces, :table
 
   # @param [Hash] params The configuration to roll a pool of dice
   # @option params [Integer] :faces The number of sides your dice have
@@ -31,7 +29,7 @@ class Melora::DicePool
   end
 
   # Throw a bucket of dice onto the table
-  # @return [Array<Fixnum>]
+  # @return [Array<Integer>]
   def roll_pool
     @table = (1..@number_of_dice).to_a.map do
       clamp_helper(roll_die + @modifier)
@@ -39,7 +37,7 @@ class Melora::DicePool
 
     @results << sort_table
 
-    $stderr.puts '/!\ You failed horribly' if @horrible_failure && rolled_horribly?
+    warn '/!\ You failed horribly' if @horrible_failure && rolled_horribly?
 
     @results.last
   end
@@ -83,7 +81,7 @@ class Melora::DicePool
       valid = expected_type.include? obj.class
     else
       valid_types = expected_type
-      valid = obj.class == expected_type
+      valid = obj.instance_of?(expected_type)
     end
 
     raise(TypeError, "#{obj_name} must be a #{valid_types}, it was #{obj} (#{obj.class})") unless valid
@@ -99,7 +97,7 @@ class Melora::DicePool
     { faces: @faces,
       number_of_dice: @number_of_dice,
       modifier: @modifier }.each do |k, v|
-      validate_type k, v, Fixnum # rubocop:disable UnifiedInteger
+      validate_type k, v, Integer
     end
 
     { horrible_failure: @horrible_failure,
@@ -123,7 +121,7 @@ class Melora::DicePool
     roll = @randomizer.rand + 1
 
     if @exploding && roll == @faces
-      $stderr.puts 'Pop!'
+      warn 'Pop!'
       roll += roll_die
     end
 
