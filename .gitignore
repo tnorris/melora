@@ -7,3 +7,4 @@
 /tmp/
 /spec/examples.txt
 *.gem
+/vendor/
