@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Melora::Traits do
   context 'My valid character sheet' do
     subject { Melora::Traits.new('./spec/fixtures/melora_traits.yaml') }

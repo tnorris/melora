@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # A simple dice roller
 class Melora::Randomizers::Fair
   def initialize(params = {})

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 # A character in deadlands
 # Can roll dice pools, load a character sheet (with traits) from a YAML
 #
-# @author Tom Norris <tom.norris.iv@gmail.com>
+# @author Jen Norris <jen@rellis.house>
 class Melora
   VERSION = '0.2.0'
 

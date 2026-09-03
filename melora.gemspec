@@ -5,8 +5,8 @@ require_relative 'lib/melora'
 Gem::Specification.new do |spec|
   spec.name = 'melora'
   spec.version = Melora::VERSION
-  spec.authors = ['Tom Norris']
-  spec.email = ['tom.norris.iv@gmail.com']
+  spec.authors = ['Jen Norris']
+  spec.email = ['jen@rellis.house']
 
   spec.summary = 'Deadlands dice rolling tools'
   spec.description = 'Dice rolling tools for the Deadlands roleplaying game.'

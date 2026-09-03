@@ -1,4 +1,17 @@
+AllCops:
+  TargetRubyVersion: '3.2'
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - 'Gemfile.lock'
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'melora.gemspec'
+
 Style/ClassAndModuleChildren:
-    EnforcedStyle: compact
-Metrics/LineLength:
-    Max: 120
+  EnforcedStyle: compact
