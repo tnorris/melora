@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'yaml'
 
 # @todo extend enumeratable
@@ -7,37 +8,26 @@ class Melora::Traits
   attr_reader :traits
 
   def initialize(yaml_path)
-    begin
-      @stats_hash = YAML.load(File.read(yaml_path))
-    rescue StandardError => e
-      $stderr.puts e
-      raise e
-    end
-
-    raise TypeError, "Unable to parse #{yaml_path}. Is it valid yaml?" unless @stats_hash.class == Hash
+    @stats_hash = YAML.safe_load(File.read(yaml_path))
+    raise TypeError, "Unable to parse #{yaml_path}. Is it valid yaml?" unless @stats_hash.instance_of?(Hash)
 
     @traits = {}
     denormalize_stats_hash
   end
 
+  # Look up the dice notation for a trait
+  # @param [String] thing a trait name
+  # @return [String] the dice notation for the trait
+  def [](thing)
+    @traits.fetch(thing)
+  end
+
   private
 
-  def method_missing(method, *thing)
-    if '[]' == method.id2name
-      @traits.fetch(thing.join(''))
-    else
-      super
-    end
-  end
-
-  def respond_to_missing?(method_name, include_private = false)
-    method_name.to_s == '[]' || super
-  end
-
-  def denormalize_stats_hash # rubocop:disable MethodLength
+  def denormalize_stats_hash # rubocop:disable Metrics/MethodLength
     @stats_hash.each do |category, category_hash|
       # skip the name, occupation, etc
-      next if 'meta' == category
+      next if category == 'meta'
 
       faces = @stats_hash[category]['base']['faces']
       dice = @stats_hash[category]['base']['dice']
@@ -45,7 +35,8 @@ class Melora::Traits
 
       category_hash.each do |trait, multiplier|
         # skip the category's base dice
-        next if 'base' == trait
+        next if trait == 'base'
+
         @traits[trait] = if multiplier
                            "#{multiplier}d#{faces}"
                          else

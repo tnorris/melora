@@ -1,5 +1,5 @@
-require 'melora'
 # frozen_string_literal: true
+
 RSpec.describe Melora::DicePool do
   context 'when told to explod dice with 1 face' do
     subject { Melora::DicePool.new(faces: 1, exploding: true) }
